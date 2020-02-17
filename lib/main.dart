@@ -10,6 +10,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Personal Expenses App',
       theme: ThemeData(
         primarySwatch: Colors.purple,
@@ -44,10 +45,10 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   final List<Transaction> _userTransactions = [
-    /* Transaction(
+    Transaction(
         id: 't1', title: 'new Shoes', amount: 69.99, date: DateTime.now()),
     Transaction(
-        id: 't2', title: 'new Jeans', amount: 99.99, date: DateTime.now()), */
+        id: 't2', title: 'new Jeans', amount: 99.99, date: DateTime.now()),
   ];
 
   List<Transaction> get _recentTransactions {
