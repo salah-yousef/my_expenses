@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import './date_picker.dart';
 
 class NewTransaction extends StatefulWidget {
   final Function addNewTransaction;
@@ -10,15 +12,22 @@ class NewTransaction extends StatefulWidget {
 }
 
 class _NewTransactionState extends State<NewTransaction> {
-  final titleController = TextEditingController();
+  final _titleController = TextEditingController();
 
-  final amountController = TextEditingController();
+  final _amountController = TextEditingController();
 
-  void submitData() {
-    final title = titleController.text;
-    final amount = double.parse(amountController.text);
+  String _getDate;
+
+  String _string = "Not set yet";
+
+  set string(String value) => setState(() => _string = value);
+
+  void _submitData() {
+    final title = _titleController.text;
+    final amount = double.parse(_amountController.text);
     if (title.isNotEmpty && amount >= 0) {
       widget.addNewTransaction(title, amount);
+      print(_string);
       Navigator.of(context).pop();
     }
   }
@@ -34,18 +43,27 @@ class _NewTransactionState extends State<NewTransaction> {
           children: <Widget>[
             TextField(
               decoration: InputDecoration(labelText: 'Title'),
-              controller: titleController,
-              onSubmitted: (_) => submitData(),
+              controller: _titleController,
+              onSubmitted: (_) => _submitData(),
             ),
             TextField(
               decoration: InputDecoration(labelText: 'Amount'),
-              controller: amountController,
+              controller: _amountController,
               keyboardType: TextInputType.numberWithOptions(decimal: true),
-              onSubmitted: (_) => submitData(),
+              inputFormatters: [WhitelistingTextInputFormatter.digitsOnly],
+              onSubmitted: (_) => _submitData(),
+            ),
+            BasicDateField(
+              (val) => setState(() => _string = _getDate),
             ),
             FlatButton(
-              onPressed: submitData,
-              child: Text('Add Transaction'),
+              onPressed: _submitData,
+              child: Text(
+                'Add Transaction',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
               textColor: Colors.purple,
             ),
           ],
